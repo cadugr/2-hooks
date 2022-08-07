@@ -1,35 +1,21 @@
 import { useEffect, useRef } from 'react';
 import './App.css';
-import useCounter from './hooks/useCounter';
-import PeopleList from './PeopleList';
+import Button from './Button';
 
 function App() {
+  const button = useRef<HTMLButtonElement>(null)
 
-  const number = useCounter()
-  /**Quando chamamos o hook useRef, podemos passar um valor inicial para o mesmo.
-   * Qual a diferença desse hook para um estado?  É que ele é mutável.  Se eu desejar alterar o valor
-   * dele diretamente, eu posso.  Porém , como não é um estado, não causa re-renderização do nosso 
-   * componente.  Este hook retorna um objeto.  Na prática, dificilmente vamos fazer uso do useRef.
-   * No entanto, um uso muito comum deste hook, é quando queremos recuperar elementos do DOM.  Porém,
-   * não é nada comum trabalharmos diretamente com o DOM dentro do React
-   */
-  const counter = useRef(2)
-  const div = useRef<HTMLDivElement>(null)
+  /**Em componentes funcionais não podemos passar uma ref como propriedade e sim devemos usar o fowardRef */
 
   useEffect(() => {
-    if(div.current) {
-      div.current.style.backgroundColor = 'green'
-    }
+    setTimeout(() => {
+      button.current?.click()
+    }, 2000)
   }, [])
 
   return (
-    <div className="App" ref={div}>
-      { number }
-      <div style={{ background: 'peachpuff'}}>
-        { counter.current }
-      </div>
-      <PeopleList/>
-      <PeopleList/>
+    <div className="App">
+      <Button ref={button} title='clique em mim'/>
     </div>
   );
 }
