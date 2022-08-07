@@ -1,5 +1,6 @@
 import './App.css';
 import useCounter from './hooks/useCounter';
+import PeopleList from './PeopleList';
 
 function App() {
 
@@ -7,6 +8,8 @@ function App() {
   return (
     <div className="App">
       { number }
+      <PeopleList/>
+      <PeopleList/>
     </div>
   );
 }
