@@ -1,58 +1,20 @@
-import { useReducer } from 'react';
+import { useRef } from 'react';
 import './App.css';
+import ScrollableBox, { ScrollableRef } from './ScrollableBox';
 
-interface InitialState {
-  count: number
-}
-
-type Action = 
-{type: 'DECREMENT'} |
-{type: 'INCREMENT', payload: number}
-
-const initialState: InitialState = {
-  count: 1
-}
-/**Essa função reducer, obrigatoriamente recebe o estado e uma ação.  Obrigatoriamente ela precisa 
- * retornar um estado.
- */
-function reducer(state: InitialState, action: Action): InitialState {
-  switch (action.type) {
-    case 'INCREMENT':
-      return {
-        count: state.count + action.payload
-      }
-      case 'DECREMENT':
-        return {
-          count: state.count - 1
-        }  
-      default:
-        return state  
-  } 
-}
 
 function App() {
 
-  /**O useReducer, espera dois parametros: uma função e o estado inicial*/
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const boxRef = useRef<ScrollableRef>(null)
 
-  /**A idéia para utilizarmos o hook useReducer é para gerenciarmos estados locais de forma mais complexa.
-   * Funciona de forma muito parecida com o redux.  O método dispatch, faz com que a função reducer seja executada.
-   * O ideal para utilizar um reducer é quando temos muita lógica para gerenciar o nosso estado.
-   */
   return (
     <div className="App">
-      <div style={{backgroundColor: 'peachpuff'}}>
-        { state.count }
-      </div>
-      <button onClick={() => {
-        dispatch({ type: 'INCREMENT', payload: 2 })
-      }}>
-        acrescer
-      </button>
-      <button onClick={() => {
-        dispatch({ type: 'DECREMENT' })
-      }}>
-        diminuir
+      <ScrollableBox ref={boxRef} width={120} height={120}>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+      </ScrollableBox>
+      { /* @ts-ignore */}
+      <button onClick={()=> boxRef.current?.scrollToBottom()}>
+        descer
       </button>
     </div>
   );
