@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './App.css';
 import ScrollableBox, { ScrollableRef } from './ScrollableBox';
 
@@ -19,6 +19,9 @@ function App() {
   useEffect(() => {
     fetchData()
   }, [fetchData])
+
+  //const data = Array(33_000_000).fill({ foo: "bar"})
+  const data = useMemo(() => Array(33_000_000).fill({ foo: "bar"}), [])
 
   return (
     <div className="App">
