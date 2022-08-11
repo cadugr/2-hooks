@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 import ScrollableBox, { ScrollableRef } from './ScrollableBox';
 
@@ -6,14 +6,27 @@ import ScrollableBox, { ScrollableRef } from './ScrollableBox';
 function App() {
 
   const boxRef = useRef<ScrollableRef>(null)
+  const [content, setContent] = useState<string>()
+  const [postId, setPostId] = useState(1)
+
+  const fetchData = useCallback (async function () {
+    const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+
+    const data = await response.json()
+    setContent(data.body)
+  },[postId])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
 
   return (
     <div className="App">
       <ScrollableBox ref={boxRef} width={120} height={120}>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+        <p>{content || 'carregando...'}</p>
       </ScrollableBox>
       { /* @ts-ignore */}
-      <button onClick={()=> boxRef.current?.scrollToBottom()}>
+      <button onClick={()=> setPostId(2)}>
         descer
       </button>
     </div>
